@@ -8,7 +8,7 @@ fn main() {
     let reader = OpenOptions::new().read(true)
         .open(input_file)
         .unwrap();
-    let buf = BufReader::with_capacity(1024*1000, reader);
+    let buf = BufReader::new(reader);
 
     
     let lines = buf.lines()
