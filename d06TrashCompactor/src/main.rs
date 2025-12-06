@@ -21,7 +21,17 @@ pub fn puzzle2(mut input: String) {
 
     let mut iter = input.split('\n');
     // Durch das reversen ist meine erste line nun die mit den operators
-    let operators = to_operators(iter.next().unwrap());
+    let mut operator =
+        iter.next()
+            .unwrap()
+            .split_ascii_whitespace()
+            .map(|operator| match operator {
+                "+" => Operator::Add,
+                "*" => Operator::Multiply,
+                _ => {
+                    unreachable!()
+                }
+            });
     // Der rest kommt in die Matrix, wobei ich die Reiehenfolge nochmal so shuffle
     // wie sie für mich Sinn ergibt
     let matrix: Vec<_> = iter.rev().map(|line| line.as_bytes()).collect();
@@ -29,7 +39,6 @@ pub fn puzzle2(mut input: String) {
     let len = matrix[0].len();
 
     let mut sum = 0;
-    let mut operator = operators.iter();
 
     let mut current_operation = operator.next().unwrap().function();
     let mut current_calculation = None;
@@ -79,6 +88,7 @@ pub enum Operator {
 }
 
 impl Operator {
+    #[inline]
     pub fn function(self) -> fn(u64, u64) -> u64 {
         match self {
             Self::Add => std::ops::Add::add,
