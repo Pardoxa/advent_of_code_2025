@@ -1,4 +1,4 @@
-use std::env::args;
+use std::{env::args, time::Instant};
 
 fn main() {
     let input = include_str!("../puzzle_input.dat");
@@ -49,6 +49,7 @@ impl Space2 {
 }
 
 pub fn puzzle1(input: &str) {
+    let start = Instant::now();
     let len = input.lines().next().unwrap().len();
     let mut height = 0;
     let mut matrix: Vec<_> = input
@@ -63,6 +64,10 @@ pub fn puzzle1(input: &str) {
             })
         })
         .collect();
+
+    let dur = start.elapsed();
+    println!("Parse total: {:?}", dur);
+    let start = Instant::now();
 
     let mut iter = matrix.chunks_exact_mut(len);
 
@@ -99,23 +104,14 @@ pub fn puzzle1(input: &str) {
         higher_line = lower_line;
     }
 
-    for line in matrix.chunks_exact(len) {
-        for space in line {
-            let c = match space {
-                Space::ChargedSplitter => 'C',
-                Space::Empty => '.',
-                Space::TractorBeam => 'T',
-                Space::Splitter => 'N',
-            };
-            print!("{c}");
-        }
-        println!()
-    }
-
+    let dur = start.elapsed();
+    println!("Task total: {:?}", dur);
     println!("{split_counter}")
 }
 
 pub fn puzzle2(input: &str) {
+    let start = Instant::now();
+
     let len = input.lines().next().unwrap().len();
     let mut height = 0;
     let mut matrix: Vec<_> = input
@@ -130,6 +126,11 @@ pub fn puzzle2(input: &str) {
             })
         })
         .collect();
+
+    let dur = start.elapsed();
+    println!("Parse total: {:?}", dur);
+
+    let start = Instant::now();
 
     let mut iter = matrix.chunks_exact_mut(len);
 
@@ -180,6 +181,9 @@ pub fn puzzle2(input: &str) {
             }
         })
         .sum();
+
+    let dur = start.elapsed();
+    println!("Task total: {:?}", dur);
 
     println!("{sum}")
 }
